@@ -1,11 +1,10 @@
 package ru.xpendence.auth.service;
 
 import com.google.common.collect.Lists;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.xpendence.auth.base.Active;
 import ru.xpendence.auth.base.RoleType;
-import ru.xpendence.auth.entity.Role;
 import ru.xpendence.auth.entity.User;
 import ru.xpendence.auth.repository.UserRepository;
 
@@ -37,6 +36,7 @@ public class UserServiceImpl implements UserService {
         return repository.save(new User(
                 user.getUsername(),
                 user.getPassword(),
+                Active.ENABLED,
                 Lists.newArrayList(roleService.getByType(RoleType.USER))
         ));
     }

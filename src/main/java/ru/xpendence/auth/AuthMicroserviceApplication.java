@@ -11,10 +11,10 @@ import org.springframework.context.annotation.PropertySources;
                 @PropertySource(value = "classpath:auth.properties")
         }
 )
-public class AuthMocroserviceApplication {
+public class AuthMicroserviceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AuthMocroserviceApplication.class, args);
+        SpringApplication.run(AuthMicroserviceApplication.class, args);
     }
 
 }
