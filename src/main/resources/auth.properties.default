@@ -1,0 +1,2 @@
+jwt.token.secret=lei4cy5w4ilxytw
+jwt.token.expires=3600000
