@@ -14,15 +14,15 @@ import ru.xpendence.auth.security.JwtTokenService;
  * e-mail: v.chernyshov@pflb.ru
  */
 @Service
-public class LoginServiceImpl implements LoginService {
+public class AuthServiceImpl implements AuthService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenService jwtTokenService;
     private final UserService userService;
 
-    public LoginServiceImpl(AuthenticationManager authenticationManager,
-                            JwtTokenService jwtTokenService,
-                            UserService userService) {
+    public AuthServiceImpl(AuthenticationManager authenticationManager,
+                           JwtTokenService jwtTokenService,
+                           UserService userService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenService = jwtTokenService;
         this.userService = userService;

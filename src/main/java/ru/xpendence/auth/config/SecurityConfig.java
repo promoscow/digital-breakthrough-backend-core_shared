@@ -21,7 +21,7 @@ import ru.xpendence.auth.security.JwtTokenService;
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenService jwtTokenService;
@@ -45,7 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login**").permitAll()
+                .antMatchers("/auth/login**").permitAll()
+                .antMatchers("/auth/register**").permitAll()
                 .antMatchers("/admin**").hasRole(RoleType.ADMIN.name())
                 .anyRequest().authenticated()
                 .and()

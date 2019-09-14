@@ -8,7 +8,7 @@ import ru.xpendence.auth.dto.LoginDto;
  * Time: 15:48
  * e-mail: v.chernyshov@pflb.ru
  */
-public interface LoginService {
+public interface AuthService {
 
     String login(LoginDto dto);
 }
