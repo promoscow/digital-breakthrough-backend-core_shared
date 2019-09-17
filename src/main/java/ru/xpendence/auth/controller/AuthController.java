@@ -1,11 +1,10 @@
 package ru.xpendence.auth.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.xpendence.auth.dto.LoginDto;
-import ru.xpendence.auth.dto.RegisterDto;
+import ru.xpendence.auth.dto.UserDto;
 import ru.xpendence.auth.service.AuthService;
 
 /**
@@ -31,15 +30,20 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Boolean> register(@Validated @RequestBody RegisterDto dto) {
-        return ResponseEntity.ok(true);
+    public ResponseEntity<Boolean> register(@Validated @RequestBody UserDto dto) {
+        return ResponseEntity.ok(service.register(dto));
+    }
+
+    @GetMapping("/confirm")
+    public ResponseEntity<String> confirm(@RequestParam String token) {
+        return ResponseEntity.ok("w3ocltyuw4oxyew498tye4t8ihe5o8t7ice4h8tie5t");
     }
 
     //    @PreAuthorize("hasAnyAuthority(" +
 //            "T(ru.xpendence.auth.base.RoleType).ADMIN,"+
 //            "T(ru.xpendence.auth.base.RoleType).USER)"
 //    )
-    @Secured("ADMIN")
+//    @Secured({"ADMIN", "USER"})
     @GetMapping
     public ResponseEntity test() {
         return ResponseEntity.ok().build();

@@ -5,7 +5,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.xpendence.auth.base.Active;
 import ru.xpendence.auth.base.RoleType;
+import ru.xpendence.auth.dto.UserDto;
 import ru.xpendence.auth.entity.User;
+import ru.xpendence.auth.mapper.UserMapper;
 import ru.xpendence.auth.repository.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
@@ -22,23 +24,25 @@ public class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final RoleService roleService;
     private final BCryptPasswordEncoder encoder;
+    private final UserMapper mapper;
 
     public UserServiceImpl(UserRepository repository,
                            BCryptPasswordEncoder encoder,
-                           RoleService roleService) {
+                           RoleService roleService,
+                           UserMapper mapper) {
         this.repository = repository;
         this.encoder = encoder;
         this.roleService = roleService;
+        this.mapper = mapper;
     }
 
     @Override
-    public User register(User user) {
-        return repository.save(new User(
-                user.getUsername(),
-                user.getPassword(),
-                Active.ENABLED,
-                Lists.newArrayList(roleService.getByType(RoleType.USER))
-        ));
+    public User create(UserDto dto) {
+        User user = mapper.toEntity(dto, new User());
+        user.setActive(Active.ENABLED);
+        user.setConfirmed(false);
+        user.setRoles(Lists.newArrayList(roleService.getByType(RoleType.USER)));
+        return repository.save(user);
     }
 
     @Override

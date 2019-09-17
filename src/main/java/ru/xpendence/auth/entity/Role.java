@@ -2,7 +2,6 @@ package ru.xpendence.auth.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import ru.xpendence.auth.base.RoleType;
 
 import javax.persistence.*;
@@ -19,7 +18,6 @@ import java.util.List;
 @Table(name = "roles")
 @EqualsAndHashCode(callSuper = true)
 @Data
-@ToString
 public class Role extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)

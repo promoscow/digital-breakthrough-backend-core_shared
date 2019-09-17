@@ -9,6 +9,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * Author: Vyacheslav Chernyshov
@@ -33,4 +34,18 @@ abstract class AbstractEntity implements Serializable {
     @Column(name = "updated")
     @LastModifiedDate
     private LocalDateTime updated;
+
+    @PrePersist
+    private void toSave() {
+        if (Objects.isNull(created)) {
+            created = LocalDateTime.now();
+        }
+    }
+
+    @PreUpdate
+    private void toUpdate() {
+        if (Objects.isNull(updated)) {
+            updated = LocalDateTime.now();
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package ru.xpendence.auth.service;
 
+import ru.xpendence.auth.dto.UserDto;
 import ru.xpendence.auth.entity.User;
 
 /**
@@ -10,7 +11,7 @@ import ru.xpendence.auth.entity.User;
  */
 public interface UserService {
 
-    User register(User user);
+    User create(UserDto dto);
 
     User findByUsername(String username);
 
