@@ -35,8 +35,9 @@ public class AuthController {
     }
 
     @GetMapping("/confirm")
-    public ResponseEntity<String> confirm(@RequestParam String token) {
-        return ResponseEntity.ok("w3ocltyuw4oxyew498tye4t8ihe5o8t7ice4h8tie5t");
+    public ResponseEntity<String> confirm(@RequestParam("username") String username,
+                                          @RequestParam("token") String token) {
+        return ResponseEntity.ok(service.confirmEmail(username, token));
     }
 
     //    @PreAuthorize("hasAnyAuthority(" +

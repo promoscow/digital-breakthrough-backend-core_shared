@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import ru.xpendence.auth.entity.RegistrationToken;
 import ru.xpendence.auth.repository.RegistrationTokenRepository;
 
+import javax.persistence.EntityNotFoundException;
+
 /**
  * Author: Vyacheslav Chernyshov
  * Date: 17.09.19
@@ -22,5 +24,11 @@ public class RegistrationTokenServiceImpl implements RegistrationTokenService {
     @Override
     public RegistrationToken create(RegistrationToken registrationToken) {
         return repository.save(registrationToken);
+    }
+
+    @Override
+    public RegistrationToken getByUsernameAndToken(String username, String token) {
+        return repository.findByUsernameAndToken(username, token)
+                .orElseThrow(() -> new EntityNotFoundException("token invalid"));
     }
 }

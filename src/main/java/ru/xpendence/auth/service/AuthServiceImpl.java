@@ -78,7 +78,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String confirmEmail(String token) {
-        return null;
+    public String confirmEmail(String username, String token) {
+        registrationTokenService.getByUsernameAndToken(username, token);
+        User user = userService.findByUsername(username);
+        return jwtTokenService.createToken(username, user.getRoles());
     }
 }

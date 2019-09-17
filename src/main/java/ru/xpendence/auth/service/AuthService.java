@@ -15,5 +15,5 @@ public interface AuthService {
 
     boolean register(UserDto dto);
 
-    String confirmEmail(String token);
+    String confirmEmail(String username, String token);
 }
