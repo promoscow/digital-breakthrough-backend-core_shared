@@ -4,6 +4,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import ru.xpendence.auth.dto.EmailMessageDto;
 import ru.xpendence.auth.dto.LoginDto;
@@ -69,7 +70,7 @@ public class AuthServiceImpl implements AuthService {
                         dto.getEmail(),
                         "slava_rossii@list.ru",
                         "Подтверждение регистрации",
-                        "http://localhost:8099/auth/confirm?username=" + registrationToken.getUsername()
+                        "http://localhost:3000/confirm?username=" + registrationToken.getUsername()
                                 + "&token=" + registrationToken.getToken()
                 ),
                 ResponseDto.class
@@ -78,9 +79,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public String confirmEmail(String username, String token) {
         registrationTokenService.getByUsernameAndToken(username, token);
         User user = userService.findByUsername(username);
+        userService.confirm(user);
         return jwtTokenService.createToken(username, user.getRoles());
     }
 }

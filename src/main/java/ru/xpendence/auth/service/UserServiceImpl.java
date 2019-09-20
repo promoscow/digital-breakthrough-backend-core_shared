@@ -1,6 +1,5 @@
 package ru.xpendence.auth.service;
 
-import com.google.common.collect.Lists;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.xpendence.auth.base.Active;
@@ -11,6 +10,7 @@ import ru.xpendence.auth.mapper.UserMapper;
 import ru.xpendence.auth.repository.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 
 /**
  * Author: Vyacheslav Chernyshov
@@ -41,7 +41,12 @@ public class UserServiceImpl implements UserService {
         User user = mapper.toEntity(dto, new User());
         user.setActive(Active.ENABLED);
         user.setConfirmed(false);
-        user.setRoles(Lists.newArrayList(roleService.getByType(RoleType.USER)));
+        user.setRoles(new ArrayList<>());
+        return repository.save(user);
+    }
+
+    @Override
+    public User save(User user) {
         return repository.save(user);
     }
 
@@ -55,5 +60,12 @@ public class UserServiceImpl implements UserService {
     public User findById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("user not found by id: " + id));
+    }
+
+    @Override
+    public User confirm(User user) {
+        user.setConfirmed(true);
+        user.getRoles().add(roleService.getByType(RoleType.USER));
+        return repository.save(user);
     }
 }
