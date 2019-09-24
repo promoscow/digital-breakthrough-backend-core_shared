@@ -1,5 +1,6 @@
 package ru.xpendence.auth.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +25,7 @@ import java.util.Objects;
  * e-mail: v.chernyshov@pflb.ru
  */
 @Service
+@Slf4j
 public class AuthServiceImpl implements AuthService {
 
     private final AuthenticationManager authenticationManager;
@@ -50,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
                 new UsernamePasswordAuthenticationToken(dto.getUsername(),
                         dto.getPassword())
         );
-        User user = userService.findByUsername(dto.getUsername());
+        User user = userService.getByUsername(dto.getUsername());
         return jwtTokenService.createToken(dto.getUsername(), user.getRoles());
     }
 
@@ -64,15 +66,18 @@ public class AuthServiceImpl implements AuthService {
                         LocalDateTime.now().plusHours(2L)
                 )
         );
+        String url = "http://message:8082/email";
+        EmailMessageDto request = new EmailMessageDto(
+                dto.getEmail(),
+                "slava_rossii@list.ru",
+                "Подтверждение регистрации",
+                "Для завершения регистрации пройдите по ссылке: http://digital.lambdacoders.ru/confirm?username="
+                        + registrationToken.getUsername() + "&token=" + registrationToken.getToken()
+        );
+        log.info("sending message to url {}: {}", url, request);
         ResponseDto response = restTemplate.postForObject(
-                "http://localhost:8082/email",
-                new EmailMessageDto(
-                        dto.getEmail(),
-                        "slava_rossii@list.ru",
-                        "Подтверждение регистрации",
-                        "http://localhost:3000/confirm?username=" + registrationToken.getUsername()
-                                + "&token=" + registrationToken.getToken()
-                ),
+                url,
+                request,
                 ResponseDto.class
         );
         return Objects.nonNull(response) ? response.getSuccess() : false;
@@ -82,7 +87,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public String confirmEmail(String username, String token) {
         registrationTokenService.getByUsernameAndToken(username, token);
-        User user = userService.findByUsername(username);
+        User user = userService.getByUsername(username);
         userService.confirm(user);
         return jwtTokenService.createToken(username, user.getRoles());
     }

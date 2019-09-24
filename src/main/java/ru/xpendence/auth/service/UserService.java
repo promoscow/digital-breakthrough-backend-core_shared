@@ -15,9 +15,9 @@ public interface UserService {
 
     User save(User user);
 
-    User findByUsername(String username);
+    User getByUsername(String username);
 
-    User findById(Long id);
+    User get(Long id);
 
     User confirm(User user);
 }

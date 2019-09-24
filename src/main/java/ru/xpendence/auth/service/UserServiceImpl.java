@@ -51,13 +51,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUsername(String username) {
+    public User getByUsername(String username) {
         return repository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("user not found by username: " + username));
     }
 
     @Override
-    public User findById(Long id) {
+    public User get(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("user not found by id: " + id));
     }

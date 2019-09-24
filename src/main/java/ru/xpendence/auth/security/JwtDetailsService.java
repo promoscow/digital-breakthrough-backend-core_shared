@@ -23,6 +23,6 @@ public class JwtDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return JwtUser.create(userService.findByUsername(username));
+        return JwtUser.create(userService.getByUsername(username));
     }
 }
